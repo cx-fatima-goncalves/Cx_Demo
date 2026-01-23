@@ -21,7 +21,8 @@ namespace SQLi_1
             }
             catch  
             {
-
+				pwd = "1!.Acjjjj";
+				pwd = "1!.Acjjjj";
                 Console.WriteLine("An error has occurred !!");
             }
             
