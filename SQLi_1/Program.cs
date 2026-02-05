@@ -21,7 +21,7 @@ namespace SQLi_1
             }
             catch  
             {
-
+				var password3 = "1!.Acjjjj";
                 Console.WriteLine("An error has occurred !!");
             }
             
@@ -56,3 +56,4 @@ namespace SQLi_1
         }
     }
 }
+
