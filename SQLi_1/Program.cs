@@ -18,40 +18,51 @@ namespace SQLi_1
                 Login(user, pwd);
 				var password = "1!.Acjjjj";
             }
-            catch  
+            catch
             {
 				var password3 = "1!.Acjjjj";
                 Console.WriteLine("An error has occurred !!");
             }
-            
+
         }
 
-        private static  string Encrypt(string plain)
+        internal static string Encrypt(string plain)
         {
             return plain;
         }
 
-        private static void Login(string username,string password)
+        internal static void Login(string username, string password)
+        {
+            Login(username, password, new SqlDataAccess());
+        }
+
+        /// <summary>
+        /// Login method with data access injection for testing
+        /// </summary>
+        internal static void Login(string username, string password, IDataAccess dataAccess)
         {
             try
             {
                 using (var conn = new SqlConnection("conn..."))
                 {
-                    var sql = "SELECT * FROM Users WHERE username = '" + username + "' AND pwd = '" + password + "'";
-                    using (var cmd = new SqlCommand(sql))
+                    // Use parameterized query to prevent SQL injection
+                    var sql = "SELECT * FROM Users WHERE username = @username AND pwd = @password";
+                    using (var cmd = dataAccess.CreateCommand(sql, conn))
                     {
-                        cmd.Connection = conn;
-                        cmd.ExecuteScalar();
+                        // Add parameters instead of concatenating user input
+                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@password", password);
+                        dataAccess.ExecuteScalar(cmd);
                     }
 
                 }
             }
-            catch  
+            catch
             {
 
                 Console.WriteLine("An error has occurred !!");
             }
-           
+
         }
     }
 }
