@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace SQLi_1
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -37,21 +37,32 @@ namespace SQLi_1
             {
                 using (var conn = new SqlConnection("conn..."))
                 {
-                    var sql = "SELECT * FROM Users WHERE username = '" + username + "' AND pwd = '" + password + "'";
-                    using (var cmd = new SqlCommand(sql))
+                    var sql = "SELECT * FROM Users WHERE username = @username AND pwd = @password";
+                    using (var cmd = new SqlCommand(sql, conn))
                     {
-                        cmd.Connection = conn;
+                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@password", password);
                         cmd.ExecuteScalar();
                     }
 
                 }
             }
-            catch  
+            catch
             {
 
                 Console.WriteLine("An error has occurred !!");
             }
-           
+
+        }
+
+        // Public method for testing SQL command creation with parameterized queries
+        public static SqlCommand CreateLoginCommand(string username, string password, SqlConnection connection)
+        {
+            var sql = "SELECT * FROM Users WHERE username = @username AND pwd = @password";
+            var cmd = new SqlCommand(sql, connection);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@password", password);
+            return cmd;
         }
     }
 }
