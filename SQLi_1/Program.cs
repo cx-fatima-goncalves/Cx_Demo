@@ -38,21 +38,23 @@ namespace SQLi_1
             {
                 using (var conn = new SqlConnection("conn..."))
                 {
-                    var sql = "SELECT * FROM Users WHERE username = '" + username + "' AND pwd = '" + password + "'";
+                    var sql = "SELECT * FROM Users WHERE username = @username AND pwd = @password";
                     using (var cmd = new SqlCommand(sql))
                     {
                         cmd.Connection = conn;
+                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@password", password);
                         cmd.ExecuteScalar();
                     }
 
                 }
             }
-            catch  
+            catch
             {
 
                 Console.WriteLine("An error has occurred !!");
             }
-           
+
         }
     }
 }
