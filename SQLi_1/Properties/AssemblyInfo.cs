@@ -22,6 +22,9 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("f487cbc5-36db-4a9a-9ae2-20e60413a0ec")]
 
+// Make internals visible to test assembly
+[assembly: InternalsVisibleTo("SQLi_1.Tests")]
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version
