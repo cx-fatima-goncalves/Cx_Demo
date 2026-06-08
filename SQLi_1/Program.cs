@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace SQLi_1
 {
-    class Program
+    public class Program
     {
         static void Main(string[] args)
         {
@@ -17,11 +17,10 @@ namespace SQLi_1
                 var pwd = Encrypt(args[1]);
                 Login(user, pwd);
 				var password = "1!.Acjjjj";
-				var password2 = "1!.Acjjjj";
             }
             catch  
             {
-
+				var password3 = "1!.Acjjjj";
                 Console.WriteLine("An error has occurred !!");
             }
             
@@ -38,21 +37,29 @@ namespace SQLi_1
             {
                 using (var conn = new SqlConnection("conn..."))
                 {
-                    var sql = "SELECT * FROM Users WHERE username = '" + username + "' AND pwd = '" + password + "'";
-                    using (var cmd = new SqlCommand(sql))
-                    {
-                        cmd.Connection = conn;
-                        cmd.ExecuteScalar();
-                    }
-
+                    var cmd = CreateSecureLoginCommand(username, password);
+                    cmd.Connection = conn;
+                    cmd.ExecuteScalar();
                 }
             }
-            catch  
+            catch
             {
 
                 Console.WriteLine("An error has occurred !!");
             }
-           
+
+        }
+
+        // Internal method for testing - creates a parameterized SQL command to prevent SQL injection
+        internal static SqlCommand CreateSecureLoginCommand(string username, string password)
+        {
+            // Use parameterized query to prevent SQL injection
+            var sql = "SELECT * FROM Users WHERE username = @username AND pwd = @password";
+            var cmd = new SqlCommand(sql);
+            // Add parameters to prevent SQL injection
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@password", password);
+            return cmd;
         }
     }
 }
