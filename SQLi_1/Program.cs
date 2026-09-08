@@ -17,11 +17,11 @@ namespace SQLi_1
                 var pwd = Encrypt(args[1]);
                 Login(user, pwd);
 				var password = "1!.Acjjjj";
-				var password2 = "1!.Acjjjj";
             }
             catch  
             {
-
+				var password3 = "1!.Acrtyrtyrtyjjjj";
+								password3 = "1!.Acrtyrtyrtyjjjsssj";
                 Console.WriteLine("An error has occurred !!");
             }
             
